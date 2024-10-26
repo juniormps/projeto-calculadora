@@ -4,26 +4,31 @@ const historico = document.querySelector("#historico")
 
 const botoes = document.querySelectorAll("[tecla-display]")
 
-let ultimoValor = ""
+let ultimoDigito = ""
+
+let ultimoNumero = ""
 
 function imprimirNoHistorico(event) {
     const valorTecla = event.target.innerText
 
     if (!isNaN(valorTecla)) {
         historico.innerHTML += valorTecla;
-        ultimoValor = valorTecla
+        ultimoDigito = valorTecla
+        ultimoNumero += valorTecla
 
     } else if ("+-÷x".includes(valorTecla)) {
 
-        if (!"+-÷x".includes(ultimoValor)) {
+        if (!"+-÷x".includes(ultimoDigito)) {
             historico.innerHTML += valorTecla
-            ultimoValor = valorTecla
+            ultimoDigito = valorTecla
+            ultimoNumero = ""
         }
     } else if (valorTecla === ".") {
     
-        if (!ultimoValor.includes(".")) {
+        if (!ultimoNumero.includes(".") && ultimoDigito != ".") {
             historico.innerHTML += valorTecla
-            ultimoValor += valorTecla
+            ultimoDigito = valorTecla
+            ultimoNumero += valorTecla
         }
     }
 
