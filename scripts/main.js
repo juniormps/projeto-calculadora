@@ -26,9 +26,17 @@ function imprimirNoHistorico(event) {
     } else if (valorTecla === ".") {
     
         if (!ultimoNumero.includes(".") && ultimoDigito != ".") {
-            historico.innerHTML += valorTecla
-            ultimoDigito = valorTecla
-            ultimoNumero += valorTecla
+            
+           if ("+-÷x".includes(ultimoDigito)) {
+                historico.innerHTML += ("0" + valorTecla)
+                ultimoDigito = valorTecla  
+                ultimoNumero = ("0" + valorTecla)  
+
+            } else {
+                historico.innerHTML += valorTecla
+                ultimoDigito = valorTecla
+                ultimoNumero += valorTecla                   
+            }
         }
     }
 
