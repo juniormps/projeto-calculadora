@@ -11,7 +11,7 @@ let ultimoNumero = ""
 function imprimirNoHistorico(event) {
     const valorTecla = event.target.innerText
 
-    //trata como o valor das teclas numéricas aparecerão no visor histórico
+    //trata as teclas numéricas
     if (!isNaN(valorTecla)) {
         historico.innerHTML += valorTecla;
         ultimoDigito = valorTecla
@@ -19,7 +19,7 @@ function imprimirNoHistorico(event) {
 
     }
     
-    //trata como o ponto flutuante aparecerá no visor histórico
+    //trata a tecla de ponto flutuante
     if (valorTecla === ".") {
     
         if (!ultimoNumero.includes(".") && ultimoDigito != ".") {
@@ -37,20 +37,36 @@ function imprimirNoHistorico(event) {
         }
     }
 
-    if ("+-÷x".includes(valorTecla) && ultimoDigito === ".") {
-        historico.innerHTML = historico.innerHTML.slice(0, -1) + valorTecla
-        ultimoDigito = valorTecla
-        ultimoNumero = ""
-    }
-
-    //trata como o valor das teclas de operações aparecerão no visor histórico
     if ("+-÷x".includes(valorTecla)) {
 
+        if (ultimoDigito === "."){
+            historico.innerHTML = historico.innerHTML.slice(0, -1) + valorTecla
+            ultimoDigito = valorTecla
+            ultimoNumero = ""
+        }
+
+       
+        
+    }
+
+    //trata as teclas de operações
+    if ("+-÷x".includes(valorTecla)) {
+
+        //Faz com que números finalizados com ponto flutuante e zero, sejam simplificados sem o pf e o zero. Ex.: a expressão (4 + 5.0 x 8.5) passa a ficar (4 + 5 x 8.5)
+        if (ultimoDigito === "0" && ultimoNumero[ultimoNumero.length - 2] === ".") {
+            historico.innerHTML = historico.innerHTML.slice(0, -2) + valorTecla
+            ultimoDigito = valorTecla
+            ultimoNumero = ""
+        }
+
+        //Não permite que um sinal de operação seja exibido em seguida de outro no visor.
         if (!"+-÷x".includes(ultimoDigito)) {
             historico.innerHTML += valorTecla
             ultimoDigito = valorTecla
             ultimoNumero = ""
         }
+
+        
     }
 
 }
