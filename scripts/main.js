@@ -11,7 +11,7 @@ let ultimoNumero = ""
 function imprimirNoHistorico(event) {
     const valorTecla = event.target.innerText
 
-    //trata as teclas numéricas
+    //trata as teclas numéricas quando clicadas
     if (!isNaN(valorTecla)) {
         historico.innerHTML += valorTecla;
         ultimoDigito = valorTecla
@@ -19,7 +19,7 @@ function imprimirNoHistorico(event) {
 
     }
     
-    //trata a tecla de ponto flutuante
+    //trata a tecla de ponto flutuante quando clicadas
     if (valorTecla === ".") {
         
         //Não permite que um ponto flutuante seja adicionado mais de uma vez no mesmo número
@@ -39,21 +39,20 @@ function imprimirNoHistorico(event) {
         }
     }
 
-    //Caso um número termine com pf e seja seguido de uma nova operação, o pf é omitido, como no exemplo: (1 + 6. + 5) => (1 + 6 + 5)
+    //trata as teclas de operações quando clicadas
     if ("+-÷x".includes(valorTecla)) {
 
+        //Caso um número termine com pf e seja seguido de uma nova operação, o pf é omitido, como no exemplo: (1 + 6. + 5) => (1 + 6 + 5)
         if (ultimoDigito === "."){
             historico.innerHTML = historico.innerHTML.slice(0, -1) + valorTecla
             ultimoDigito = valorTecla
             ultimoNumero = ""
-        }    
-    }
+        }
 
-    //trata as teclas de operações
-    if ("+-÷x".includes(valorTecla)) {
-
-        //Faz com que números finalizados com ponto flutuante e zero, sejam simplificados sem o pf e o zero. Ex.: a expressão (4 + 5.0 x 8.5) passa a ficar (4 + 5 x 8.5)
-        if (ultimoDigito === "0" && ultimoNumero[ultimoNumero.length - 2] === ".") {
+        //Faz com que números finalizados com ponto flutuante e zero, sejam simplificados sem o pf e o zero (ou zeros). Ex.: (4 + 5.0 x 8.5) => (4 + 5 x 8.5) ou (4 + 5.000 x 8.5) => (4 + 5 x 8.5) 
+        if (ultimoDigito === "0") {
+            //continuar aqui
+            ultimoNumero[ultimoNumero.length - 2] === "."
             historico.innerHTML = historico.innerHTML.slice(0, -2) + valorTecla
             ultimoDigito = valorTecla
             ultimoNumero = ""
