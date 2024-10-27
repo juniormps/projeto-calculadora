@@ -21,9 +21,11 @@ function imprimirNoHistorico(event) {
     
     //trata a tecla de ponto flutuante
     if (valorTecla === ".") {
-    
+        
+        //Não permite que um ponto flutuante seja adicionado mais de uma vez no mesmo número
         if (!ultimoNumero.includes(".") && ultimoDigito != ".") {
             
+            //Caso o último digito seja um sinal de operação e um pf seja adicionado em seguida dele, a expressão é transformada como no exemplo: (1 + 6.8 + .5) => (1 + 6.8 + 0.5). Caso contrário, o pf é adicionado normalmente.
            if ("+-÷x".includes(ultimoDigito)) {
                 historico.innerHTML += ("0" + valorTecla)
                 ultimoDigito = valorTecla  
@@ -37,16 +39,14 @@ function imprimirNoHistorico(event) {
         }
     }
 
+    //Caso um número termine com pf e seja seguido de uma nova operação, o pf é omitido, como no exemplo: (1 + 6. + 5) => (1 + 6 + 5)
     if ("+-÷x".includes(valorTecla)) {
 
         if (ultimoDigito === "."){
             historico.innerHTML = historico.innerHTML.slice(0, -1) + valorTecla
             ultimoDigito = valorTecla
             ultimoNumero = ""
-        }
-
-       
-        
+        }    
     }
 
     //trata as teclas de operações
@@ -65,8 +65,6 @@ function imprimirNoHistorico(event) {
             ultimoDigito = valorTecla
             ultimoNumero = ""
         }
-
-        
     }
 
 }
