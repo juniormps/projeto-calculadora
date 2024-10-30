@@ -14,33 +14,35 @@ function imprimirNoHistorico(event) {
     // Trata as teclas numéricas quando clicadas
     if (!isNaN(valorTecla)) {
 
-        // Insere os valores numéricos no histórico
+        //Trata os zeros à esquerda
         if (ultimoDigito === "0") {
 
-            const caracteresNoDisplay = historico.innerText
-            const totalDeCaracteres = caracteresNoDisplay.length
-            const penultimoCaractere = caracteresNoDisplay[totalDeCaracteres - 1]
+            const digitosNoDisplay = historico.innerText
+            const totalDeDigitos = digitosNoDisplay.length
+            const penultimoDigito = digitosNoDisplay[totalDeDigitos - 1]
 
             // Se o penúltimo caractere for uma operação, substitua o último zero
-            if ("+-÷x".includes(penultimoCaractere)) {
+            if ("+-÷x".includes(penultimoDigito)) {
                 
                 // Atualiza o último número com a remoção de zero à esquerda
-                ultimoNumero = valorTecla
                 historico.innerHTML = historico.innerHTML.slice(0, -1) + ultimoNumero
-
+                ultimoNumero = valorTecla
+                ultimoDigito = valorTecla // Atualiza o último dígito
+            
             } else {
                 // Se não for uma operação, apenas atualiza o último número normalmente
-                ultimoNumero += valorTecla
                 historico.innerHTML += valorTecla
+                ultimoNumero += valorTecla
+                ultimoDigito = valorTecla // Atualiza o último dígito
             }
 
         } else {
             // Se não houver condição de zero à esquerda, apenas adicione o número
             historico.innerHTML += valorTecla
             ultimoNumero += valorTecla
+            ultimoDigito = valorTecla // Atualiza o último dígito
         }
 
-        ultimoDigito = valorTecla // Atualiza o último dígito
     }
     
     //trata o ponto flutuante
