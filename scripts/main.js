@@ -6,7 +6,7 @@ const botoes = document.querySelectorAll("[tecla-display]")
 
 let ultimoDigito = ""
 
-let ultimoNumero = ""
+let ultimoNumero = "" 
 
 function imprimirNoHistorico(event) {
     const valorTecla = event.target.innerText
@@ -41,30 +41,30 @@ function imprimirNoHistorico(event) {
     //trata as teclas de operações quando clicadas
     if ("+-÷x".includes(valorTecla)) {
 
+        //Não permite que um sinal de operação seja exibido em seguida de outro no visor
+        //e
+        //Remove zeros à esquerda e à direita após o pf e valores válidos. 
+        //Exemplo.: (00562 + 45) => (562 + 45); (256 - 0.5200) => (256 - 0.52) 
+        if (!"+-÷x".includes(ultimoDigito)) {
+            const tamanhoUltimoNumOriginal = ultimoNumero.length
+            const ultimoNumeroFormatado = parseFloat(ultimoNumero).toString()
+            historico.innerHTML = historico.innerHTML.slice(0, - tamanhoUltimoNumOriginal) + ultimoNumeroFormatado + valorTecla
+            
+        } else {
+            historico.innerHTML = historico.innerHTML.slice(0, -1) + valorTecla
+        }
+
+        ultimoDigito = valorTecla
+        ultimoNumero = ""
+        
+        
         //Caso um número termine com pf e seja seguido de uma nova operação, o pf é omitido, como no exemplo: (1 + 6. + 5) => (1 + 6 + 5)
         if (ultimoDigito === "."){
             historico.innerHTML = historico.innerHTML.slice(0, -1) + valorTecla
             ultimoDigito = valorTecla
             ultimoNumero = ""
         }
-
-        //Faz com que números finalizados com ponto flutuante e zero, sejam simplificados sem o pf e o zero (ou zeros). Ex.: (4 + 5.0 x 8.5) => (4 + 5 x 8.5) ou (4 + 5.000 x 8.5) => (4 + 5 x 8.5) 
-        if (ultimoDigito === "0") {
-            //continuar aqui
-            ultimoNumero[ultimoNumero.length - 2] === "."
-            historico.innerHTML = historico.innerHTML.slice(0, -2) + valorTecla
-            ultimoDigito = valorTecla
-            ultimoNumero = ""
-        }
-
-        //Não permite que um sinal de operação seja exibido em seguida de outro no visor.
-        if (!"+-÷x".includes(ultimoDigito)) {
-            historico.innerHTML += valorTecla
-            ultimoDigito = valorTecla
-            ultimoNumero = ""
-        }
     }
-
 }
 
 botoes.forEach(botao => botao.onclick = imprimirNoHistorico)
