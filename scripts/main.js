@@ -2,7 +2,7 @@
 
 const historico = document.querySelector("#historico") 
 
-const botoes = document.querySelectorAll("button")
+const botoes = document.querySelectorAll("[tecla-display]")
 
 let ultimoDigito = ""
 
@@ -11,53 +11,26 @@ let ultimoNumero = ""
 function imprimirNoHistorico(event) {
     const valorTecla = event.target.innerText
 
-    // Trata as teclas numéricas quando clicadas
+    //trata as teclas numéricas quando clicadas
     if (!isNaN(valorTecla)) {
-
-        //Trata os zeros à esquerda
-        if (ultimoDigito === "0") {
-
-            const digitosNoDisplay = historico.innerText
-            const totalDeDigitos = digitosNoDisplay.length
-            const penultimoDigito = digitosNoDisplay[totalDeDigitos - 1]
-
-            // Se o penúltimo caractere for uma operação, substitua o último zero
-            if ("+-÷x".includes(penultimoDigito)) {
-                
-                // Atualiza o último número com a remoção de zero à esquerda
-                historico.innerHTML = historico.innerHTML.slice(0, -1) + ultimoNumero
-                ultimoNumero = valorTecla
-                ultimoDigito = valorTecla // Atualiza o último dígito
-            
-            } else {
-                // Se não for uma operação, apenas atualiza o último número normalmente
-                historico.innerHTML += valorTecla
-                ultimoNumero += valorTecla
-                ultimoDigito = valorTecla // Atualiza o último dígito
-            }
-
-        } else {
-            // Se não houver condição de zero à esquerda, apenas adicione o número
-            historico.innerHTML += valorTecla
-            ultimoNumero += valorTecla
-            ultimoDigito = valorTecla // Atualiza o último dígito
-        }
-
+        historico.innerHTML += valorTecla;
+        ultimoDigito = valorTecla
+        ultimoNumero += valorTecla
     }
     
-    //trata o ponto flutuante
+    //trata a tecla de ponto flutuante quando clicadas
     if (valorTecla === ".") {
         
         //Não permite que um ponto flutuante seja adicionado mais de uma vez no mesmo número
         if (!ultimoNumero.includes(".") && ultimoDigito != ".") {
             
-            //Caso um número inicie com pf como (3 + .5), ele é transformado como (3 + 0.5). ou seja, é inserido um zero antes do pf.
+            //Caso o último digito seja um sinal de operação e um pf seja adicionado em seguida dele, a expressão é transformada como no exemplo: (1 + 6.8 + .5) => (1 + 6.8 + 0.5). Caso contrário, o pf é adicionado normalmente.
            if ("+-÷x".includes(ultimoDigito)) {
                 historico.innerHTML += ("0" + valorTecla)
                 ultimoDigito = valorTecla  
                 ultimoNumero = ("0" + valorTecla)  
                 
-            } else {  //Caso o pf estiver sendo adicionado no meio de um número, ele é adicionado normalmente.
+            } else {
                 historico.innerHTML += valorTecla
                 ultimoDigito = valorTecla
                 ultimoNumero += valorTecla                   
@@ -65,32 +38,30 @@ function imprimirNoHistorico(event) {
         }
     }
 
-    //Caso um número termine com pf e seja seguido de uma nova operação, o pf é omitido, como no exemplo: (1 + 6. + 5) => (1 + 6 + 5)
+    //trata as teclas de operações quando clicadas
     if ("+-÷x".includes(valorTecla)) {
 
-        if (ultimoDigito === ".") {
+        //Caso um número termine com pf e seja seguido de uma nova operação, o pf é omitido, como no exemplo: (1 + 6. + 5) => (1 + 6 + 5)
+        if (ultimoDigito === "."){
             historico.innerHTML = historico.innerHTML.slice(0, -1) + valorTecla
             ultimoDigito = valorTecla
             ultimoNumero = ""
         }
-    }
 
-    //trata as teclas de operações quando clicadas
-    if ("+-÷x".includes(valorTecla)) {
+        //Faz com que números finalizados com ponto flutuante e zero, sejam simplificados sem o pf e o zero (ou zeros). Ex.: (4 + 5.0 x 8.5) => (4 + 5 x 8.5) ou (4 + 5.000 x 8.5) => (4 + 5 x 8.5) 
+        if (ultimoDigito === "0") {
+            //continuar aqui
+            ultimoNumero[ultimoNumero.length - 2] === "."
+            historico.innerHTML = historico.innerHTML.slice(0, -2) + valorTecla
+            ultimoDigito = valorTecla
+            ultimoNumero = ""
+        }
 
         //Não permite que um sinal de operação seja exibido em seguida de outro no visor.
         if (!"+-÷x".includes(ultimoDigito)) {
             historico.innerHTML += valorTecla
             ultimoDigito = valorTecla
             ultimoNumero = ""
-        }
-    }
-
-    //Caso o último digito do histórico seja uma operação (+-÷x) e após ele seja clicado o sinal de igual (=), o símbolo da operação é apagado.
-    if (valorTecla === "=") {
-
-        if ("+-÷x".includes(ultimoDigito)) {
-            historico.innerHTML = historico.innerHTML.slice(0, -1)
         }
     }
 
