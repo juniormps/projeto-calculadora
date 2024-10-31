@@ -84,11 +84,14 @@ function imprimirNoHistorico(event) {
         //(15 + 96 -) => (15 + 96)
         if ("+-÷x".includes(ultimoDigito)) {
             historico.innerHTML = historico.innerHTML.slice(0, -1)
+            ultimoDigito = historico.innerHTML.slice(-1)
 
         } else {  //Formata o último número quando o sinal de igual é clicado.
             const tamanhoUltimoNumOriginal = ultimoNumero.length
             const ultimoNumeroFormatado = parseFloat(ultimoNumero).toString()
             historico.innerHTML = historico.innerHTML.slice(0, - tamanhoUltimoNumOriginal) + ultimoNumeroFormatado
+            ultimoDigito = ultimoNumeroFormatado.slice(-1)
+            ultimoNumero = ultimoNumeroFormatado
         }
 
     }
@@ -98,6 +101,19 @@ function imprimirNoHistorico(event) {
         historico.innerHTML = ""
         ultimoDigito = ""
         ultimoNumero = ""
+    }
+
+    //Trata a tecla "Backspace"
+    if (valorTecla === "b") {
+        historico.innerHTML = historico.innerHTML.slice(0, -1)
+        
+        if ("+-÷x".includes(ultimoDigito)) {
+            ultimoDigito = historico.innerHTML.slice(-1)
+
+        } else if (!isNaN(ultimoDigito) || ultimoDigito === ".") {
+            ultimoDigito = historico.innerHTML.slice(-1)
+            ultimoNumero = ultimoNumero.slice(0, -1)
+        }    
     }
 }
 
