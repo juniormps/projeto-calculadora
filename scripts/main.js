@@ -92,6 +92,13 @@ function imprimirNoHistorico(event) {
         }
 
     }
+
+    //Trata a tecla "C" quando clicada
+    if (valorTecla === "C") {
+        historico.innerHTML = ""
+        ultimoDigito = ""
+        ultimoNumero = ""
+    }
 }
 
 botoes.forEach(botao => botao.onclick = imprimirNoHistorico)
