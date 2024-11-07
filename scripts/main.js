@@ -8,6 +8,8 @@ let ultimoDigito = ""
 
 let ultimoNumero = "" 
 
+const numerosEOperacoes = []
+
 function imprimirNoHistorico(event) {
     const valorTecla = event.target.innerText
 
@@ -67,15 +69,20 @@ function imprimirNoHistorico(event) {
             const ultimoNumeroFormatado = parseFloat(ultimoNumero).toString()
             historico.innerHTML = historico.innerHTML.slice(0, - tamanhoUltimoNumOriginal) + ultimoNumeroFormatado + valorTecla
             ultimoDigito = valorTecla
+            numerosEOperacoes.push(ultimoNumero, valorTecla)
             ultimoNumero = ""
             
         } else {
             historico.innerHTML = historico.innerHTML.slice(0, -1) + valorTecla
             ultimoDigito = valorTecla
+            numerosEOperacoes.pop()  //Remove o último sinal de operação, o qual será trocado pelo utual digitado.
+            numerosEOperacoes.push(valorTecla)
             ultimoNumero = ""
         }
 
     }
+
+    
 
     //Trata eventos quando a tecla de sinal de igual "=" é clicada
     if (valorTecla === "=") {
@@ -85,6 +92,10 @@ function imprimirNoHistorico(event) {
         if ("+-÷x".includes(ultimoDigito)) {
             historico.innerHTML = historico.innerHTML.slice(0, -1)
             ultimoDigito = historico.innerHTML.slice(-1)
+            numerosEOperacoes.pop()
+            ultimoNumero = numerosEOperacoes[numerosEOperacoes.length - 1]
+
+
 
         } else {  //Formata o último número quando o sinal de igual é clicado.
             const tamanhoUltimoNumOriginal = ultimoNumero.length
@@ -104,7 +115,7 @@ function imprimirNoHistorico(event) {
     }
 
     //Trata a tecla "Backspace"
-    if (valorTecla === "b") {
+    if (valorTecla === "⌫") {
         historico.innerHTML = historico.innerHTML.slice(0, -1)
         
         if ("+-÷x".includes(ultimoDigito)) {
@@ -115,6 +126,8 @@ function imprimirNoHistorico(event) {
             ultimoNumero = ultimoNumero.slice(0, -1)
         }    
     }
+
+    console.log(numerosEOperacoes)
 }
 
 botoes.forEach(botao => botao.onclick = imprimirNoHistorico)
