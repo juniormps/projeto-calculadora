@@ -69,7 +69,7 @@ function imprimirNoHistorico(event) {
             const ultimoNumeroFormatado = parseFloat(ultimoNumero).toString()
             historico.innerHTML = historico.innerHTML.slice(0, - tamanhoUltimoNumOriginal) + ultimoNumeroFormatado + valorTecla
             ultimoDigito = valorTecla
-            penultimoNumero = ultimoNumero
+            penultimoNumero = ultimoNumeroFormatado
             ultimoNumero = ""
             
         } else {
@@ -113,6 +113,7 @@ function imprimirNoHistorico(event) {
         
         if ("+-÷x".includes(ultimoDigito)) {
             ultimoDigito = historico.innerHTML.slice(-1)
+            ultimoNumero = penultimoNumero
 
         } else if (!isNaN(ultimoDigito) || ultimoDigito === ".") {
             ultimoDigito = historico.innerHTML.slice(-1)
