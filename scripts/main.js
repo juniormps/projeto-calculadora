@@ -8,8 +8,6 @@ let ultimoDigito = ""
 
 let ultimoNumero = "" 
 
-let numerosEOperacoes = []
-
 function imprimirNoHistorico(event) {
     const valorTecla = event.target.innerText
 
@@ -69,20 +67,15 @@ function imprimirNoHistorico(event) {
             const ultimoNumeroFormatado = parseFloat(ultimoNumero).toString()
             historico.innerHTML = historico.innerHTML.slice(0, - tamanhoUltimoNumOriginal) + ultimoNumeroFormatado + valorTecla
             ultimoDigito = valorTecla
-            numerosEOperacoes.push(ultimoNumero, valorTecla)
             ultimoNumero = ""
             
         } else {
             historico.innerHTML = historico.innerHTML.slice(0, -1) + valorTecla
             ultimoDigito = valorTecla
-            numerosEOperacoes.pop()  //Remove o último sinal de operação, o qual será trocado pelo utual digitado.
-            numerosEOperacoes.push(valorTecla)
             ultimoNumero = ""
         }
 
     }
-
-    
 
     //Trata eventos quando a tecla de sinal de igual "=" é clicada
     if (valorTecla === "=") {
@@ -92,10 +85,6 @@ function imprimirNoHistorico(event) {
         if ("+-÷x".includes(ultimoDigito)) {
             historico.innerHTML = historico.innerHTML.slice(0, -1)
             ultimoDigito = historico.innerHTML.slice(-1)
-            numerosEOperacoes.pop()
-            ultimoNumero = numerosEOperacoes[numerosEOperacoes.length - 1]
-
-
 
         } else {  //Formata o último número quando o sinal de igual é clicado.
             const tamanhoUltimoNumOriginal = ultimoNumero.length
@@ -103,7 +92,6 @@ function imprimirNoHistorico(event) {
             historico.innerHTML = historico.innerHTML.slice(0, - tamanhoUltimoNumOriginal) + ultimoNumeroFormatado
             ultimoDigito = ultimoNumeroFormatado.slice(-1)
             ultimoNumero = ultimoNumeroFormatado
-            numerosEOperacoes.push(ultimoNumero)   //RESOLVER ERRO DA REPETIÇAO DO ÚLTIMO NÚMERO AO APERTAR A TECLA IGUAL REPETIDAMENTE
         }
 
     }
@@ -113,30 +101,20 @@ function imprimirNoHistorico(event) {
         historico.innerHTML = ""
         ultimoDigito = ""
         ultimoNumero = ""
-        numerosEOperacoes = [] //reseta o array para começar uma nova operação
     }
 
     //Trata a tecla "Backspace"
-    if (valorTecla === "⌫") {
+    if (valorTecla === "b") {
         historico.innerHTML = historico.innerHTML.slice(0, -1)
         
         if ("+-÷x".includes(ultimoDigito)) {
             ultimoDigito = historico.innerHTML.slice(-1)
-            numerosEOperacoes.pop()
-            ultimoNumero = numerosEOperacoes[numerosEOperacoes.length - 1]
 
         } else if (!isNaN(ultimoDigito) || ultimoDigito === ".") {
             ultimoDigito = historico.innerHTML.slice(-1)
             ultimoNumero = ultimoNumero.slice(0, -1)
-            numerosEOperacoes.pop()
-            numerosEOperacoes.push(ultimoNumero) //continuar daqui
         }    
     }
-
-    console.log(numerosEOperacoes)
-    console.log(ultimoNumero)
-    console.log(ultimoDigito)
-    console.log(historico.innerText)
 }
 
 botoes.forEach(botao => botao.onclick = imprimirNoHistorico)
