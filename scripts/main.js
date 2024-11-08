@@ -6,7 +6,9 @@ const botoes = document.querySelectorAll("button")
 
 let ultimoDigito = ""
 
-let ultimoNumero = "" 
+let ultimoNumero = ""
+
+let penultimoNumero = ""
 
 function imprimirNoHistorico(event) {
     const valorTecla = event.target.innerText
@@ -67,6 +69,7 @@ function imprimirNoHistorico(event) {
             const ultimoNumeroFormatado = parseFloat(ultimoNumero).toString()
             historico.innerHTML = historico.innerHTML.slice(0, - tamanhoUltimoNumOriginal) + ultimoNumeroFormatado + valorTecla
             ultimoDigito = valorTecla
+            penultimoNumero = ultimoNumero
             ultimoNumero = ""
             
         } else {
@@ -85,6 +88,7 @@ function imprimirNoHistorico(event) {
         if ("+-÷x".includes(ultimoDigito)) {
             historico.innerHTML = historico.innerHTML.slice(0, -1)
             ultimoDigito = historico.innerHTML.slice(-1)
+            ultimoNumero = penultimoNumero
 
         } else {  //Formata o último número quando o sinal de igual é clicado.
             const tamanhoUltimoNumOriginal = ultimoNumero.length
@@ -104,7 +108,7 @@ function imprimirNoHistorico(event) {
     }
 
     //Trata a tecla "Backspace"
-    if (valorTecla === "b") {
+    if (valorTecla === "⌫") {
         historico.innerHTML = historico.innerHTML.slice(0, -1)
         
         if ("+-÷x".includes(ultimoDigito)) {
@@ -115,6 +119,10 @@ function imprimirNoHistorico(event) {
             ultimoNumero = ultimoNumero.slice(0, -1)
         }    
     }
+
+    console.log("historico => " + historico.innerText)
+    console.log("ultimoDigito => " + ultimoDigito)
+    console.log("ultimoNumero => " + ultimoNumero)
 }
 
 botoes.forEach(botao => botao.onclick = imprimirNoHistorico)
