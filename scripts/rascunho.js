@@ -140,3 +140,99 @@ function imprimirNoHistorico(event) {
 }
 
 botoes.forEach(botao => botao.onclick = imprimirNoHistorico)
+
+
+
+if (valorTecla === "+/-") {
+    let teclaAtivada = false
+
+    if (teclaAtivada === false) {
+        if (historico.innerText === "") {
+                historico.innerHTML = "(-"
+                teclaAtivada = true
+        }
+
+        if (!isNaN(ultimoDigito) || ultimoDigito === ".") {
+                historico.innerHTML = historico.innerHTML.slice(0, - (ultimoNumero.length + 1))
+                historico.innerHTML = historico.innerText + "(-" + ultimoNumero
+                teclaAtivada = true
+        }
+
+    }
+    
+    if (teclaAtivada === true) {
+
+    }
+    if (!isNaN(ultimoDigito) || ultimoDigito === ".") {
+            historico.innerHTML = historico.innerHTML.slice(0, - (ultimoNumero.length + 2))
+            historico.innerHTML = historico.innerText + ultimoNumero
+            teclaAtivada = false
+    }
+
+    /*
+    if ("+-÷x".includes(ultimoDigito)) {
+        historico.innerHTML += "(-"
+    } */
+}
+
+
+
+if (valorTecla === "+/-") {
+    let teclaAtivada = false
+    
+    if (historico.innerText === "") {
+        if (teclaAtivada === false) {
+            historico.innerHTML = "(-"
+            teclaAtivada = true
+        }
+    }
+        
+    if (!isNaN(ultimoDigito) || ultimoDigito === ".") {
+        if (teclaAtivada === false) {
+            historico.innerHTML = historico.innerHTML.slice(0, - (ultimoNumero.length + 1))
+            historico.innerHTML = historico.innerText + "(-" + ultimoNumero
+            teclaAtivada = true
+
+        } else if (teclaAtivada === true) {
+            historico.innerHTML = historico.innerHTML.slice(0, - (ultimoNumero.length + 2))
+            historico.innerHTML = historico.innerText + ultimoNumero
+            teclaAtivada = false
+        }
+        
+    }
+
+    /*
+    if ("+-÷x".includes(ultimoDigito)) {
+        historico.innerHTML += "(-"
+    } */
+}
+
+if (valorTecla === "+/-") {
+    
+    if (teclaAterarSinalAtivada === false) {
+        if (ultimoDigito === "" && ultimoNumero === "") {
+                historico.innerHTML += "(-"
+        }
+
+        if (!isNaN(ultimoDigito) || ultimoDigito === ".") {
+                historico.innerHTML = historico.innerHTML.slice(0, - (ultimoNumero.length + 1))
+                historico.innerHTML = historico.innerText + "(-" + ultimoNumero
+        }
+
+        teclaAterarSinalAtivada = true
+
+    } else if (teclaAterarSinalAtivada === true) {
+        if (ultimoNumero.startsWith("(-")) {
+            historico.innerHTML = historico.innerHTML.slice(0, - (ultimoNumero.length + 2))
+            historico.innerHTML = historico.innerText + ultimoNumero
+        }
+
+        teclaAterarSinalAtivada = false
+    }
+    
+
+    /*
+    if ("+-÷x".includes(ultimoDigito)) {
+        historico.innerHTML += "(-"
+    } */
+}

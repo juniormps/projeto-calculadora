@@ -65,6 +65,11 @@ function imprimirNoHistorico(event) {
         //Remove zeros à esquerda e à direita sem valor. 
         //Exemplo.: (00562 + 45) => (562 + 45); (256 - 0.5200) => (256 - 0.52) 
          else if (!"+-÷x".includes(ultimoDigito)) {
+
+            if (ultimoNumero.startsWith("(-")) {
+                ultimoNumero = ultimoNumero.slice(1)
+            }
+            
             const tamanhoUltimoNumOriginal = ultimoNumero.length
             const ultimoNumeroFormatado = parseFloat(ultimoNumero).toString()
             historico.innerHTML = historico.innerHTML.slice(0, - tamanhoUltimoNumOriginal) + ultimoNumeroFormatado + valorTecla
@@ -119,6 +124,38 @@ function imprimirNoHistorico(event) {
             ultimoDigito = historico.innerHTML.slice(-1)
             ultimoNumero = ultimoNumero.slice(0, -1)
         }    
+    }
+
+    if (valorTecla === "+/-") {
+    
+        if (historico.innerText === "") {
+            ultimoNumero = "(-"
+            historico.innerHTML = ultimoNumero
+
+        } else if (historico.innerText === "(-") {
+            ultimoNumero = ""
+            historico.innerHTML = ""
+
+        } else if (!isNaN(ultimoDigito) || ultimoDigito === ".") {
+            if (ultimoNumero.startsWith("(-")) {
+                ultimoNumero = ultimoNumero.slice(2)  //remove o parênteses e o sinal negativo do último número
+                historico.innerHTML = historico.innerHTML.slice(0, - (ultimoNumero.length + 2)) + ultimoNumero
+
+            } else {
+                ultimoNumero = "(-" + ultimoNumero
+                historico.innerHTML = historico.innerHTML.slice(0, - (ultimoNumero.length - 2)) + ultimoNumero
+            }   
+
+        } else if ("+-÷x".includes(ultimoDigito)) {
+            if (ultimoNumero === "") {
+                ultimoNumero = "(-" + ultimoNumero
+                historico.innerHTML += ultimoNumero
+
+            } else {
+                ultimoNumero = ""  //remove o parênteses e o sinal negativo do último número
+                historico.innerHTML = historico.innerHTML.slice(0, -2)
+            } 
+        }
     }
 
     console.log("historico => " + historico.innerText)
