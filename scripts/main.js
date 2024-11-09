@@ -69,7 +69,7 @@ function imprimirNoHistorico(event) {
             if (ultimoNumero.startsWith("(-")) {
                 ultimoNumero = ultimoNumero.slice(1)
             }
-            
+
             const tamanhoUltimoNumOriginal = ultimoNumero.length
             const ultimoNumeroFormatado = parseFloat(ultimoNumero).toString()
             historico.innerHTML = historico.innerHTML.slice(0, - tamanhoUltimoNumOriginal) + ultimoNumeroFormatado + valorTecla
@@ -114,16 +114,35 @@ function imprimirNoHistorico(event) {
 
     //Trata a tecla "Backspace"
     if (valorTecla === "⌫") {
-        historico.innerHTML = historico.innerHTML.slice(0, -1)
         
-        if ("+-÷x".includes(ultimoDigito)) {
-            ultimoDigito = historico.innerHTML.slice(-1)
-            ultimoNumero = penultimoNumero
+        
+        if (ultimoNumero.startsWith("(-")) {
 
-        } else if (!isNaN(ultimoDigito) || ultimoDigito === ".") {
-            ultimoDigito = historico.innerHTML.slice(-1)
-            ultimoNumero = ultimoNumero.slice(0, -1)
-        }    
+            if (ultimoNumero === "(-") {
+                historico.innerHTML = historico.innerHTML.slice(0, -2)
+                ultimoDigito = historico.innerHTML.slice(-1)
+                ultimoNumero = ""
+
+
+            } else if (!isNaN(ultimoDigito) || ultimoDigito === "."){
+                historico.innerHTML = historico.innerHTML.slice(0, -1)
+                ultimoDigito = historico.innerHTML.slice(-1)
+                ultimoNumero = ultimoNumero.slice(0, -1)
+            }
+
+        } else {
+            historico.innerHTML = historico.innerHTML.slice(0, -1)
+
+            if ("+-÷x".includes(ultimoDigito)) {
+                ultimoDigito = historico.innerHTML.slice(-1)
+                ultimoNumero = penultimoNumero
+    
+            } else if (!isNaN(ultimoDigito) || ultimoDigito === ".") {
+                ultimoDigito = historico.innerHTML.slice(-1)
+                ultimoNumero = ultimoNumero.slice(0, -1)
+            }
+        }
+            
     }
 
     if (valorTecla === "+/-") {
@@ -159,6 +178,7 @@ function imprimirNoHistorico(event) {
     }
 
     console.log("historico => " + historico.innerText)
+    console.log("penultimoNumero => " + penultimoNumero)
     console.log("ultimoDigito => " + ultimoDigito)
     console.log("ultimoNumero => " + ultimoNumero)
 }
