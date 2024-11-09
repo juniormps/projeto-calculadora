@@ -53,36 +53,42 @@ function imprimirNoHistorico(event) {
 
     //trata as teclas de operações quando clicadas
     if ("+-÷x".includes(valorTecla)) {
+        
+        if (ultimoNumero === "(-") {
+            //Não faz nada quando o último número é apenas "(-"
 
-        //Não permite que o usuário insira uma operação antes de inserir um número
-        if (ultimoDigito === "") {
-            historico.innerHTML = "Digite um número primeiro"
-            ultimoDigito = ""
-        }
-
-        //Faz com que o sinal de operação clicado mais recente substitua o que já existe, caso teclas com valor de operações sejam clicadas uma em seguida da outra.
-        //e
-        //Remove zeros à esquerda e à direita sem valor. 
-        //Exemplo.: (00562 + 45) => (562 + 45); (256 - 0.5200) => (256 - 0.52) 
-         else if (!"+-÷x".includes(ultimoDigito)) {
-
-            if (ultimoNumero.startsWith("(-")) {
-                ultimoNumero = ultimoNumero.slice(1)
-            }
-
-            const tamanhoUltimoNumOriginal = ultimoNumero.length
-            const ultimoNumeroFormatado = parseFloat(ultimoNumero).toString()
-            historico.innerHTML = historico.innerHTML.slice(0, - tamanhoUltimoNumOriginal) + ultimoNumeroFormatado + valorTecla
-            ultimoDigito = valorTecla
-            penultimoNumero = ultimoNumeroFormatado
-            ultimoNumero = ""
+            return
             
         } else {
-            historico.innerHTML = historico.innerHTML.slice(0, -1) + valorTecla
-            ultimoDigito = valorTecla
-            ultimoNumero = ""
-        }
 
+            //Não permite que o usuário insira uma operação antes de inserir um número
+            if (ultimoDigito === "") {
+                historico.innerHTML = "Digite um número primeiro"
+                ultimoDigito = ""
+
+            } else if (!"+-÷x".includes(ultimoDigito)) {
+                //Faz com que o sinal de operação clicado mais recente substitua o que já existe, caso teclas com valor de operações sejam clicadas uma em seguida da outra.
+                //e
+                //Remove zeros à esquerda e à direita sem valor. 
+                //Exemplo.: (00562 + 45) => (562 + 45); (256 - 0.5200) => (256 - 0.52) 
+
+                if (ultimoNumero.startsWith("(-")) {
+                    ultimoNumero = ultimoNumero.slice(1)
+                }
+
+                const tamanhoUltimoNumOriginal = ultimoNumero.length
+                const ultimoNumeroFormatado = parseFloat(ultimoNumero).toString()
+                historico.innerHTML = historico.innerHTML.slice(0, - tamanhoUltimoNumOriginal) + ultimoNumeroFormatado + valorTecla
+                ultimoDigito = valorTecla
+                penultimoNumero = ultimoNumeroFormatado
+                ultimoNumero = ""
+
+            } else {
+                historico.innerHTML = historico.innerHTML.slice(0, -1) + valorTecla
+                ultimoDigito = valorTecla
+                ultimoNumero = ""
+            }
+        }
     }
 
     //Trata eventos quando a tecla de sinal de igual "=" é clicada
