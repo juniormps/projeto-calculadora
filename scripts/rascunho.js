@@ -106,6 +106,13 @@ function imprimirNoHistorico(event) {
             numerosEOperacoes.push(ultimoNumero)   //RESOLVER ERRO DA REPETIÇAO DO ÚLTIMO NÚMERO AO APERTAR A TECLA IGUAL REPETIDAMENTE
         }
 
+
+        if (historico.innerText.includes("(")) {
+            let expressaoFinal = historico.innerText.split("")
+            let quantidadeParenteses = expressaoFinal.reduce((total, carcterAtual) => carcterAtual === "(" ? total + 1 : total, 0)
+            
+        }
+
     }
 
     //Trata a tecla "C" quando clicada
